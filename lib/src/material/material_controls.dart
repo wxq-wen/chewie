@@ -17,8 +17,8 @@ import 'package:video_player/video_player.dart';
 class MaterialControls extends StatefulWidget {
   const MaterialControls({
     this.showPlayButton = true,
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final bool showPlayButton;
 
@@ -43,9 +43,9 @@ class _MaterialControlsState extends State<MaterialControls>
   Timer? _bufferingDisplayTimer;
   bool _displayBufferingIndicator = false;
 
-  final barHeight = 48.0 * 1.5;
+  final barHeight = 48.0;
   final marginSize = 5.0;
-
+  bool isShowSpeeds = false;
   late VideoPlayerController controller;
   ChewieController? _chewieController;
 
@@ -90,7 +90,7 @@ class _MaterialControlsState extends State<MaterialControls>
                 )
               else
                 _buildHitArea(),
-              _buildActionBar(),
+              // _buildActionBar(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
@@ -250,7 +250,18 @@ class _MaterialControlsState extends State<MaterialControls>
     BuildContext context,
   ) {
     final iconColor = Theme.of(context).textTheme.labelLarge!.color;
-
+    return AnimatedOpacity(
+      opacity: notifier.hideStuff ? 0.0 : 1.0,
+      duration: const Duration(milliseconds: 500),
+      child: Container(
+        height: barHeight + (chewieController.isFullScreen ? 20.0 : 0),
+        padding: EdgeInsets.only(
+          left: 20,
+          bottom: !chewieController.isFullScreen ? 10.0 : 0,
+        ),
+        child: buildNewBottmBar(),
+      ),
+    );
     return AnimatedOpacity(
       opacity: notifier.hideStuff ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 300),
@@ -261,7 +272,6 @@ class _MaterialControlsState extends State<MaterialControls>
           bottom: !chewieController.isFullScreen ? 10.0 : 0,
         ),
         child: SafeArea(
-          top: false,
           bottom: chewieController.isFullScreen,
           minimum: chewieController.controlsSafeAreaMinimum,
           child: Column(
@@ -303,7 +313,56 @@ class _MaterialControlsState extends State<MaterialControls>
       ),
     );
   }
-
+  buildNewBottmBar() {
+    final position = _latestValue.position;
+    final duration = _latestValue.duration;
+    final leftDur = duration - position;
+    return Row(
+      children: [
+        Container(
+          // 播放时间
+          margin: const EdgeInsets.only(left: 0),
+          child: Text("${formatDuration(position)}",
+            style:
+            const TextStyle(color: Colors.white),
+          ),
+        ),
+        if (!chewieController.isLive)
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.only(left: 10),
+              child: Row(
+                children: [
+                  _buildProgressBar(),
+                ],
+              ),
+            ),
+          ),
+        Container(
+          // 播放时间
+          margin: const EdgeInsets.only(left: 10,right: 10),
+          child: Text("${formatDuration(leftDur)}",
+            style:
+            const TextStyle(color: Colors.white),
+          ),
+        ),
+        if (chewieController.allowMuting)
+          _buildMuteButton(controller),
+        // if (chewieController.isFullScreen && chewieController.allowFullScreen)
+        //   GestureDetector(
+        //     child: Container(
+        //       padding: EdgeInsets.only(left: 5),
+        //       child: Text("${_latestValue.playbackSpeed}",style: const TextStyle(color: Colors.white),
+        //       ),
+        //     ),
+        //     onTap: () {
+        //       _onSpeedButtonTap();
+        //     },
+        //   ),
+        if (chewieController.allowFullScreen) _buildExpandButton(),
+      ],
+    );
+  }
   GestureDetector _buildMuteButton(
     VideoPlayerController controller,
   ) {

@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 
 class CupertinoOptionsDialog extends StatefulWidget {
   const CupertinoOptionsDialog({
-    super.key,
+    Key? key,
     required this.options,
     this.cancelButtonText,
-  });
+  }) : super(key: key);
 
   final List<OptionItem> options;
   final String? cancelButtonText;

@@ -18,8 +18,8 @@ import 'package:video_player/video_player.dart';
 class MaterialDesktopControls extends StatefulWidget {
   const MaterialDesktopControls({
     this.showPlayButton = true,
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final bool showPlayButton;
 

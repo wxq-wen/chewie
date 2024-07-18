@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class OptionsDialog extends StatefulWidget {
   const OptionsDialog({
-    super.key,
+    Key? key,
     required this.options,
     this.cancelButtonText,
-  });
+  }) : super(key: key);
 
   final List<OptionItem> options;
   final String? cancelButtonText;

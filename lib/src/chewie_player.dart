@@ -26,9 +26,9 @@ typedef ChewieRoutePageBuilder = Widget Function(
 /// make it easy to use!
 class Chewie extends StatefulWidget {
   const Chewie({
-    super.key,
+    Key? key,
     required this.controller,
-  });
+  }) : super(key: key);
 
   /// The [ChewieController]
   final ChewieController controller;
@@ -647,10 +647,10 @@ class ChewieController extends ChangeNotifier {
 
 class ChewieControllerProvider extends InheritedWidget {
   const ChewieControllerProvider({
-    super.key,
+    Key? key,
     required this.controller,
-    required super.child,
-  });
+    required Widget child,
+  }) : super(key: key, child: child);
 
   final ChewieController controller;
 

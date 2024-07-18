@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 class PlaybackSpeedDialog extends StatelessWidget {
   const PlaybackSpeedDialog({
-    super.key,
+    Key? key,
     required List<double> speeds,
     required double selected,
   })  : _speeds = speeds,
-        _selected = selected;
+        _selected = selected,
+        super(key: key);
 
   final List<double> _speeds;
   final double _selected;

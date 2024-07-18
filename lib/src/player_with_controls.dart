@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 class PlayerWithControls extends StatelessWidget {
-  const PlayerWithControls({super.key});
+  const PlayerWithControls({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

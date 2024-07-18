@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class AdaptiveControls extends StatelessWidget {
   const AdaptiveControls({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

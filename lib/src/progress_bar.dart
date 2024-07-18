@@ -9,11 +9,12 @@ class VideoProgressBar extends StatefulWidget {
     this.onDragEnd,
     this.onDragStart,
     this.onDragUpdate,
-    super.key,
+    Key? key,
     required this.barHeight,
     required this.handleHeight,
     required this.drawShadow,
-  }) : colors = colors ?? ChewieProgressColors();
+  })  : colors = colors ?? ChewieProgressColors(),
+        super(key: key);
 
   final VideoPlayerController controller;
   final ChewieProgressColors colors;
@@ -125,14 +126,14 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
 
 class StaticProgressBar extends StatelessWidget {
   const StaticProgressBar({
-    super.key,
+    Key? key,
     required this.value,
     required this.colors,
     required this.barHeight,
     required this.handleHeight,
     required this.drawShadow,
     this.latestDraggableOffset,
-  });
+  }) : super(key: key);
 
   final Offset? latestDraggableOffset;
   final VideoPlayerValue value;

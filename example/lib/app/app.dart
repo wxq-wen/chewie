@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:chewie/chewie.dart';
 import 'package:chewie_example/app/theme.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:video_player/video_player.dart';
 
 class ChewieDemo extends StatefulWidget {
   const ChewieDemo({
-    super.key,
+    Key? key,
     this.title = 'Chewie Demo',
-  });
+  }) : super(key: key);
 
   final String title;
 
@@ -188,9 +189,9 @@ class _ChewieDemoState extends State<ChewieDemo> {
                     ? Chewie(
                         controller: _chewieController!,
                       )
-                    : const Column(
+                    : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: const [
                           CircularProgressIndicator(),
                           SizedBox(height: 20),
                           Text('Loading'),
@@ -332,7 +333,8 @@ class _ChewieDemoState extends State<ChewieDemo> {
 }
 
 class DelaySlider extends StatefulWidget {
-  const DelaySlider({super.key, required this.delay, required this.onSave});
+  const DelaySlider({Key? key, required this.delay, required this.onSave})
+      : super(key: key);
 
   final int? delay;
   final void Function(int?) onSave;

@@ -62,9 +62,9 @@ class _MaterialControlsState extends State<MaterialControls>
   Widget build(BuildContext context) {
     if (_latestValue.hasError) {
       return chewieController.errorBuilder?.call(
-            context,
-            chewieController.videoPlayerController.value.errorDescription!,
-          ) ??
+        context,
+        chewieController.videoPlayerController.value.errorDescription!,
+      ) ??
           const Center(
             child: Icon(
               Icons.error,
@@ -90,6 +90,7 @@ class _MaterialControlsState extends State<MaterialControls>
                 )
               else
                 _buildHitArea(),
+              if (chewieController.isFullScreen) _buildBackActionBar(),
               // _buildActionBar(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -101,7 +102,7 @@ class _MaterialControlsState extends State<MaterialControls>
                         notifier.hideStuff ? barHeight * 0.8 : 0.0,
                       ),
                       child:
-                          _buildSubtitles(context, chewieController.subtitle!),
+                      _buildSubtitles(context, chewieController.subtitle!),
                     ),
                   _buildBottomBar(context),
                 ],
@@ -139,7 +140,46 @@ class _MaterialControlsState extends State<MaterialControls>
 
     super.didChangeDependencies();
   }
-
+  Widget _buildBackActionBar() {
+    return Positioned(
+      top: 10,
+      left: 20,
+      child: SafeArea(
+        child: AnimatedOpacity(
+          opacity: notifier.hideStuff ? 0.0 : 1.0,
+          duration: const Duration(milliseconds: 250),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                  onTap: _onExpandCollapse,
+                  child: Container(
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                      )
+                  )
+              ),
+              const SizedBox(width: 5,),
+              Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.9,
+                ),
+                child: Text(chewieController.videoTitle ?? "",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
   Widget _buildActionBar() {
     return Positioned(
       top: 0,
@@ -194,7 +234,7 @@ class _MaterialControlsState extends State<MaterialControls>
               builder: (context) => OptionsDialog(
                 options: options,
                 cancelButtonText:
-                    chewieController.optionsTranslation?.cancelButtonText,
+                chewieController.optionsTranslation?.cancelButtonText,
               ),
             );
           }
@@ -247,8 +287,8 @@ class _MaterialControlsState extends State<MaterialControls>
   }
 
   AnimatedOpacity _buildBottomBar(
-    BuildContext context,
-  ) {
+      BuildContext context,
+      ) {
     final iconColor = Theme.of(context).textTheme.labelLarge!.color;
     return AnimatedOpacity(
       opacity: notifier.hideStuff ? 0.0 : 1.0,
@@ -364,8 +404,8 @@ class _MaterialControlsState extends State<MaterialControls>
     );
   }
   GestureDetector _buildMuteButton(
-    VideoPlayerController controller,
-  ) {
+      VideoPlayerController controller,
+      ) {
     return GestureDetector(
       onTap: () {
         _cancelAndRestartTimer();
@@ -570,10 +610,10 @@ class _MaterialControlsState extends State<MaterialControls>
       chewieController.toggleFullScreen();
       _showAfterExpandCollapseTimer =
           Timer(const Duration(milliseconds: 300), () {
-        setState(() {
-          _cancelAndRestartTimer();
-        });
-      });
+            setState(() {
+              _cancelAndRestartTimer();
+            });
+          });
     });
   }
 
@@ -671,7 +711,7 @@ class _MaterialControlsState extends State<MaterialControls>
               playedColor: Theme.of(context).colorScheme.secondary,
               handleColor: Theme.of(context).colorScheme.secondary,
               bufferedColor:
-                  Theme.of(context).colorScheme.background.withOpacity(0.5),
+              Theme.of(context).colorScheme.background.withOpacity(0.5),
               backgroundColor: Theme.of(context).disabledColor.withOpacity(.5),
             ),
       ),

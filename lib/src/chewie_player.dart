@@ -304,6 +304,7 @@ class ChewieController extends ChangeNotifier {
     this.progressIndicatorDelay,
     this.hideControlsTimer = defaultHideControlsTimer,
     this.controlsSafeAreaMinimum = EdgeInsets.zero,
+    this.videoTitle,
   }) : assert(
           playbackSpeeds.every((speed) => speed > 0),
           'The playbackSpeeds values must all be greater than 0',
@@ -351,6 +352,7 @@ class ChewieController extends ChangeNotifier {
     List<SystemUiOverlay>? systemOverlaysAfterFullScreen,
     List<DeviceOrientation>? deviceOrientationsAfterFullScreen,
     Duration? progressIndicatorDelay,
+    String? videoTitle,
     Widget Function(
       BuildContext,
       Animation<double>,
@@ -406,6 +408,7 @@ class ChewieController extends ChangeNotifier {
       hideControlsTimer: hideControlsTimer ?? this.hideControlsTimer,
       progressIndicatorDelay:
           progressIndicatorDelay ?? this.progressIndicatorDelay,
+      videoTitle: videoTitle ?? this.videoTitle,
     );
   }
 
@@ -415,6 +418,8 @@ class ChewieController extends ChangeNotifier {
   /// won't be shown.
   final bool showOptions;
 
+  ///视频标题
+  final String? videoTitle;
   /// Pass your translations for the options like:
   /// - PlaybackSpeed
   /// - Subtitles

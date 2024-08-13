@@ -305,6 +305,7 @@ class ChewieController extends ChangeNotifier {
     this.hideControlsTimer = defaultHideControlsTimer,
     this.controlsSafeAreaMinimum = EdgeInsets.zero,
     this.videoTitle,
+    this.fullChange,
   }) : assert(
           playbackSpeeds.every((speed) => speed > 0),
           'The playbackSpeeds values must all be greater than 0',
@@ -353,6 +354,7 @@ class ChewieController extends ChangeNotifier {
     List<DeviceOrientation>? deviceOrientationsAfterFullScreen,
     Duration? progressIndicatorDelay,
     String? videoTitle,
+    void Function(bool isFull)? fullChange,
     Widget Function(
       BuildContext,
       Animation<double>,
@@ -409,6 +411,7 @@ class ChewieController extends ChangeNotifier {
       progressIndicatorDelay:
           progressIndicatorDelay ?? this.progressIndicatorDelay,
       videoTitle: videoTitle ?? this.videoTitle,
+      fullChange: fullChange ?? this.fullChange,
     );
   }
 
@@ -420,6 +423,9 @@ class ChewieController extends ChangeNotifier {
 
   ///视频标题
   final String? videoTitle;
+
+  /// 全屏切换回调
+  final void Function(bool isFull)? fullChange;
   /// Pass your translations for the options like:
   /// - PlaybackSpeed
   /// - Subtitles
@@ -607,16 +613,19 @@ class ChewieController extends ChangeNotifier {
 
   void enterFullScreen() {
     _isFullScreen = true;
+    fullChange?.call(_isFullScreen);
     notifyListeners();
   }
 
   void exitFullScreen() {
     _isFullScreen = false;
+    fullChange?.call(_isFullScreen);
     notifyListeners();
   }
 
   void toggleFullScreen() {
     _isFullScreen = !_isFullScreen;
+    fullChange?.call(_isFullScreen);
     notifyListeners();
   }
 

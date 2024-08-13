@@ -153,11 +153,9 @@ class _MaterialControlsState extends State<MaterialControls>
             children: [
               GestureDetector(
                   onTap: _onExpandCollapse,
-                  child: Container(
-                      child: const Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.white,
-                      )
+                  child: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.white,
                   )
               ),
               const SizedBox(width: 5,),

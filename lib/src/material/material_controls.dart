@@ -91,6 +91,7 @@ class _MaterialControlsState extends State<MaterialControls>
               else
                 _buildHitArea(),
               if (chewieController.isFullScreen) _buildBackActionBar(),
+              if (isShowSpeeds) _buildSpeedList(),
               // _buildActionBar(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -153,18 +154,20 @@ class _MaterialControlsState extends State<MaterialControls>
             children: [
               GestureDetector(
                   onTap: _onExpandCollapse,
-                  child: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.white,
+                  child: Container(
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                      )
                   )
               ),
-              const SizedBox(width: 5,),
+              SizedBox(width: 5,),
               Container(
                 constraints: BoxConstraints(
                   maxWidth: MediaQuery.of(context).size.width * 0.9,
                 ),
-                child: Text(chewieController.videoTitle ?? "",
-                  style: const TextStyle(
+                child: Text("标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题",
+                  style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                   ),
@@ -196,7 +199,38 @@ class _MaterialControlsState extends State<MaterialControls>
       ),
     );
   }
-
+  Widget _buildSpeedList() {
+    return Center(
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children:chewieController.playbackSpeeds.map((e) => GestureDetector(child: Container(
+            margin: EdgeInsets.all(5),
+            width: 70,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Center(
+              child: Text(e.toString(),style: TextStyle(
+                fontSize: 16,
+                color:e == _latestValue.playbackSpeed ? Colors.red : Colors.white,
+              ),),
+            ),
+          ) ,
+            onTap: () {
+              controller.setPlaybackSpeed(e);
+              isShowSpeeds = false;
+              if (_latestValue.isPlaying) {
+                _startHideTimer();
+              }
+            },
+          )).toList() ,
+        ),
+      ),
+    ) ;
+  }
   Widget _buildOptionsButton() {
     final options = <OptionItem>[
       OptionItem(
@@ -327,6 +361,8 @@ class _MaterialControlsState extends State<MaterialControls>
                     if (chewieController.allowMuting)
                       _buildMuteButton(controller),
                     const Spacer(),
+                    if (chewieController.isFullScreen)
+                      _buildMuteButton(controller),
                     if (chewieController.allowFullScreen) _buildExpandButton(),
                   ],
                 ),
@@ -386,21 +422,43 @@ class _MaterialControlsState extends State<MaterialControls>
         ),
         if (chewieController.allowMuting)
           _buildMuteButton(controller),
-        // if (chewieController.isFullScreen && chewieController.allowFullScreen)
-        //   GestureDetector(
-        //     child: Container(
-        //       padding: EdgeInsets.only(left: 5),
-        //       child: Text("${_latestValue.playbackSpeed}",style: const TextStyle(color: Colors.white),
-        //       ),
-        //     ),
-        //     onTap: () {
-        //       _onSpeedButtonTap();
-        //     },
-        //   ),
+        if (chewieController.isFullScreen)
+          _buildSpeedButton(controller),
         if (chewieController.allowFullScreen) _buildExpandButton(),
       ],
     );
   }
+
+  GestureDetector _buildSpeedButton(
+      VideoPlayerController controller,
+      ) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isShowSpeeds = !isShowSpeeds;
+        });
+      },
+      child: AnimatedOpacity(
+        opacity: notifier.hideStuff ? 0.0 : 1.0,
+        duration: const Duration(milliseconds: 300),
+        child: ClipRect(
+          child: Container(
+            height: barHeight,
+            padding: const EdgeInsets.only(
+              left: 6.0,
+            ),
+            child: Center(child: Text(
+              "${_latestValue.playbackSpeed}",
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),),
+          ),
+        ),
+      ),
+    );
+  }
+
   GestureDetector _buildMuteButton(
       VideoPlayerController controller,
       ) {
@@ -604,7 +662,6 @@ class _MaterialControlsState extends State<MaterialControls>
   void _onExpandCollapse() {
     setState(() {
       notifier.hideStuff = true;
-
       chewieController.toggleFullScreen();
       _showAfterExpandCollapseTimer =
           Timer(const Duration(milliseconds: 300), () {

@@ -295,7 +295,7 @@ class ChewieController extends ChangeNotifier {
     this.allowMuting = true,
     this.allowPlaybackSpeedChanging = true,
     this.useRootNavigator = true,
-    this.playbackSpeeds = const [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+    this.playbackSpeeds = const [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
     this.systemOverlaysOnEnterFullScreen,
     this.deviceOrientationsOnEnterFullScreen,
     this.systemOverlaysAfterFullScreen = SystemUiOverlay.values,

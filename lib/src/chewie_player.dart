@@ -213,7 +213,7 @@ class ChewieState extends State<Chewie> {
       );
     } else {
       final isLandscapeVideo = videoWidth > videoHeight;
-      final isPortraitVideo = videoWidth < videoHeight;
+      const isPortraitVideo = false;
 
       /// Default behavior
       /// Video w > h means we force landscape

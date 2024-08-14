@@ -166,7 +166,7 @@ class _MaterialControlsState extends State<MaterialControls>
                 constraints: BoxConstraints(
                   maxWidth: MediaQuery.of(context).size.width * 0.9,
                 ),
-                child: Text("标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题",
+                child: Text(chewieController.videoTitle ?? "",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -201,33 +201,31 @@ class _MaterialControlsState extends State<MaterialControls>
   }
   Widget _buildSpeedList() {
     return Center(
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children:chewieController.playbackSpeeds.map((e) => GestureDetector(child: Container(
-            margin: EdgeInsets.all(5),
-            width: 70,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Center(
-              child: Text(e.toString(),style: TextStyle(
-                fontSize: 16,
-                color:e == _latestValue.playbackSpeed ? Colors.red : Colors.white,
-              ),),
-            ),
-          ) ,
-            onTap: () {
-              controller.setPlaybackSpeed(e);
-              isShowSpeeds = false;
-              if (_latestValue.isPlaying) {
-                _startHideTimer();
-              }
-            },
-          )).toList() ,
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children:chewieController.playbackSpeeds.map((e) => GestureDetector(child: Container(
+          margin: const EdgeInsets.all(5),
+          width: 70,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Center(
+            child: Text(e == 1 ? "正常" : "${e.toString()}x",style: TextStyle(
+              fontSize: 16,
+              color:e == _latestValue.playbackSpeed ? Colors.red : Colors.white,
+            ),),
+          ),
+        ) ,
+          onTap: () {
+            controller.setPlaybackSpeed(e);
+            isShowSpeeds = false;
+            if (_latestValue.isPlaying) {
+              _startHideTimer();
+            }
+          },
+        )).toList() ,
       ),
     ) ;
   }
@@ -448,7 +446,7 @@ class _MaterialControlsState extends State<MaterialControls>
               left: 6.0,
             ),
             child: Center(child: Text(
-              "${_latestValue.playbackSpeed}",
+              _latestValue.playbackSpeed == 1 ? "倍速" : "${_latestValue.playbackSpeed}x",
               style: const TextStyle(
                 color: Colors.white,
               ),

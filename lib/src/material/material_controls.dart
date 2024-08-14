@@ -448,6 +448,7 @@ class _MaterialControlsState extends State<MaterialControls>
             child: Center(child: Text(
               _latestValue.playbackSpeed == 1 ? "倍速" : "${_latestValue.playbackSpeed}x",
               style: const TextStyle(
+                fontSize: 15,
                 color: Colors.white,
               ),
             ),),
